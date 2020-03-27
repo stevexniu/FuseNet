@@ -1,0 +1,35 @@
+Package: WLR
+Title: Weighted Local Robustness
+Version: 0.1.0
+Authors@R: 
+    person(given = "Steve X",
+           family = "Niu",
+           role = c("aut", "cre"),
+           email = "xin2001@med.cornell.edu")
+Description: Multi-modal integration for single cell multi-omic data using weighted local robustness.
+Depends: R (>= 3.6.2)
+Imports: 
+	Rcpp (>= 0.11.0),
+	parallel,
+	doParallel,
+	foreach,
+	reticulate,
+	Matrix,
+	RANN,
+	irlba
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+LinkingTo: 
+    Rcpp,
+    RcppEigen,
+    RcppProgress
+Collate: 
+    'RcppExports.R'
+    'WLR_utils.R'
+    'WLR.R'
+    'WLR_class.R'
+RoxygenNote: 7.0.2
+Suggests:
+    knitr
+VignetteBuilder: knitr

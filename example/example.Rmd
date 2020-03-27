@@ -1,0 +1,50 @@
+---
+title: "WLR Tutorial"
+output: html_notebook
+---
+1. We load the [CITE-seq](https://www.nature.com/articles/nmeth.4380) human PBMC data. You can follow the [Seurat tutorial](https://satijalab.org/seurat/v3.1/multimodal_vignette.html) or download the analyzed [R object](https://drive.google.com/drive/folders/1hmvf1vJdG2DN60fl1jzLWmCM-SNwYjjX?usp=sharing).
+
+```{r setup, fig.height=5, fig.width=10}
+library(WLR)
+library(Seurat)
+cbmc <- readRDS(file = "cbmc.data.rds")
+CombinePlots(plots = list(DimPlot(cbmc, reduction = "umap", group.by = "rnaClusterID", label = TRUE) + ggplot2::ggtitle("RNA-seq Data"), DimPlot(cbmc1, reduction = "tsne_adt", group.by = "rnaClusterID", label = TRUE) + ggplot2::ggtitle("ADT Surface Protein Data")))
+```
+
+2. We run WLR on the RNA data.
+```{r RNA}
+data_rna <- cbmc@assays$RNA@counts[cbmc@assays$RNA@var.features,]
+cbmc_rna <- InitiateWLR(raw_data = data_rna, project_name = "RNA", normalization = "cosine", pca_dims = 20, kernel = "gaussian", k = 30)
+cbmc_rna <- GeomSketch(object = cbmc_rna, geom_pca_dims = 20, geom_size = 1000, sketch_n_pca = 20, sketch_k = 30)
+ptm <- proc.time()
+cbmc_rna <- RunWLR(object = cbmc_rna, n_iters = 1000, wlr_pca_dims = 20, wlr_k = 30, ratio = 0.1, norm_type = "l1")
+ptm1 <- proc.time() 
+print(x = ptm1 - ptm)
+```
+
+3. We run WLR on the ADT data.
+```{r ADT}
+data_prt <- cbmc@assays$ADT@counts
+cbmc_prt <- InitiateWLR(raw_data = data_prt, project_name = "Protein", normalization = "c", kernel = "gaussian", k = 30, verbose = FALSE)
+cbmc_prt <- GeomSketch(object = cbmc_prt, geom_size = 1000, geom_pca_dims = 3, sketch_n_pca = 0, sketch_k = 30)
+ptm <- proc.time()
+cbmc_prt <- RunWLR(object = cbmc_prt, n_iters = 1000, ratio = 0.1, wlr_k = 30, norm_type = "l1")
+ptm1 <- proc.time() 
+print(x = ptm1 - ptm)
+```
+
+4. We fuse the RNA and ADT data. We see that CD4+ and CD8+ T cells are more defined by the ADT data in the surface protein space, while Dendritic cells (DCs) are more defined in the RNA-seq data due to the absence of its surface marker in the ADT data.
+```{r fuse, fig.height=5, fig.width=10}
+fused <- FuseWLR(cbmc_rna, cbmc_prt, project_k = 10)
+cbmc@meta.data["RNA_Score"] <- fused$fused_weight["RNA",]
+cbmc@meta.data["Protein_Score"] <- fused$fused_weight["Protein",]
+CombinePlots(plots = list(VlnPlot(object = cbmc1, features = "RNA_Score", sort = TRUE), VlnPlot(object = cbmc1, features = "Protein_Score", sort = TRUE)))
+```
+
+5. We perform UMAP dimensional reduction on the fused data. Additionally, clustering can be performed as well.
+```{r umap, fig.height=4, fig.width=5}
+umap.dims <- uwot::umap(X = as.matrix(fused$fused_dist), n_components = 2)
+dimnames(x = umap.dims) <- dimnames(x = cbmc@reductions$umap@cell.embeddings)
+cbmc@reductions$umap@cell.embeddings = umap.dims
+DimPlot(object = cbmc, group.by = "rnaClusterID", reduction = "umap", label = TRUE)
+```
