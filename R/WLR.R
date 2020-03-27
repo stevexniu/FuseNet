@@ -189,6 +189,7 @@ FuseWLR <- function(..., project_k = 10, zero_percent = 0.7){
   fused.weight <- apply(X = fused.weight, MARGIN = 2, FUN = function(x) 1-x/sum(x))
   for(i in 1:length(x = obj.list)){
     fused.dist[[i]] <- fused.dist[[i]] * fused.weight[i, ]
+    fused.dist[[i]] <- fused.dist[[i]] + t(x = fused.dist[[i]])
   }
   fused.dist <- Reduce(f = "+", x = fused.dist)
   if(nnzero(x = fused.dist)/length(x = fused.dist) < (1 - zero_percent)) fused.dist <- Matrix(data = fused.dist, sparse = TRUE)
