@@ -1,5 +1,5 @@
 ### FuseNet: Non-parametric Network Fusion
-```FuseNet``` performs permutation based network fusion across different modalities, such as (single-cell) Transcriptomics and Proteomics.
+```FuseNet``` performs permutation based network fusion across different modalities, such as (single-cell) transcriptomics and proteomics data.
 
 Installation
 -----
