@@ -17,7 +17,7 @@ NULL
 #' @param normalize_factor Normalization factor used with lognorm method. Default is 10000.
 #' @param zero_percent Zero-entry percentage threshold. If the number of zero entries in the returned matrices is above this number, a sparse matrix will be returned. Default is 0.7 aka 70\%.
 #' @param verbose Whether to display a process bar. Default is FALSE.
-#' @return Returns a list contains outputs from \code{\link[irlba]{irlba}}.
+#' @return Returns the normalized data.
 #' @import Matrix
 #' @examples \donttest{
 #' normalized.data <- Normalization(data)
@@ -51,9 +51,9 @@ Normalization <- function(counts, normalization = c("cosine", "lognorm", "none")
 #' scaled.data <- Scaling(data)
 #' }
 Scaling <- function(matrix, verbose = FALSE){
-  if(class(matrix) == "matrix"){
+  if(is(matrix,"matrix")){
     scale.data <- FastRowScale(mat = matrix, display_progress = verbose)
-  } else if (class(matrix) == "dgCMatrix"){
+  } else if (is(matrix,"dgCMatrix")){
     scale.data <- FastSparseRowScale(mat = matrix, display_progress = verbose)
   }
   dimnames(scale.data) <- dimnames(matrix)
@@ -216,6 +216,7 @@ RunGeomSketch <- function(data, geom_size, is_pca = FALSE, n_pca = 10, seed = 1,
 #' @param calc_perturb_mat Whether to calculate the perturb matrix. Default is FALSE.
 #' @param n_cores Number of cores used. Default is to use all existing cores. See details \code{\link[parallel]{makeCluster}}.
 #' @param zero_percent Zero-entry percentage threshold. If the number of zero entries in the returned matrices is above this number, a sparse matrix will be returned. Default is 0.7 aka 70\%.
+#' @param ... Additional parameters pass to \code{\link[parallel]{makeCluster}}.
 #' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom doParallel registerDoParallel
 #' @importFrom Matrix nnzero Matrix
@@ -230,7 +231,8 @@ RunGeomSketch <- function(data, geom_size, is_pca = FALSE, n_pca = 10, seed = 1,
 #' @examples \donttest{
 #' boot.result <- Bootstrap(data, dist.mat.null, k = 10, kernel = "gaussian", normalization = "cosine", pca_dims = 10, norm_type = "l1", n_iters = 100, ratio = 0.1)
 #' }
-Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "euclidean"), normalization = c("cosine", "lognorm", "none"), normalize_factor = 1e4, pca_dims = 0, norm_type = c("l1", "l2"), n_iters = 100, ratio = 0.05, t = 0, calc_perturb_mat = FALSE, n_cores = NULL, zero_percent = 0.7){
+Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "euclidean"), normalization = c("cosine", "lognorm", "none"), normalize_factor = 1e4, pca_dims = 0, norm_type = c("l1", "l2"), 
+                      n_iters = 100, ratio = 0.05, t = 0, calc_perturb_mat = FALSE, n_cores = NULL, zero_percent = 0.7, ...){
   kernel <- match.arg(arg = kernel)
   dist.fxn <- switch(kernel,
                      gaussian = GaussianDist,
@@ -245,7 +247,7 @@ Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "eucli
   dist_mat_null <- as.matrix(dist_mat_null)
   
   if(is.null(x = n_cores)) n_cores <- detectCores() - 1
-  cl <- makeCluster(spec = n_cores)
+  cl <- makeCluster(spec = n_cores, ...)
   registerDoParallel(cl = cl)
   if(pca_dims > 0){
     results <- foreach(i = 1:n_iters, .multicombine = TRUE, .packages = "WLR") %dopar% {
@@ -390,8 +392,7 @@ MergeLists <- function(a, b) {
   b.names <- names(b)
   m.names <- unique(c(a.names, b.names))
   sapply(m.names, function(i) {
-    if (is.list(a[[i]]) & is.list(b[[i]])) merge.lists(a[[i]], b[[i]])
-    else if (i %in% b.names) b[[i]]
+    if (i %in% b.names) b[[i]]
     else a[[i]]
   }, simplify = FALSE)
 }

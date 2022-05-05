@@ -34,11 +34,10 @@ NULL
 #' }
 InitiateWLR <- function(raw_data, project_name = "", normalization = c("cosine", "lognorm", "none"), normalize_factor = 1e4, zero_percent = 0.7, pca_dims = 0, kernel = c("gaussian", "euclidean"), k = 100, t = 0, verbose = FALSE, seed = 1){
   message("Initiate WLR")
-  feature.means <- rowMeans(x = raw_data)
   feature.sd <- apply(X = raw_data, MARGIN = 1, FUN = sd)
-  if(any(feature.means == 0 | feature.sd == 0)){
+  if(any(feature.sd == 0)){
     message("Removing Missing Features")
-    raw_data <- raw_data[-which(feature.means == 0 | feature.sd == 0),]
+    raw_data <- raw_data[-which(x = feature.sd == 0),]
   }  
   object <- new(Class = "WLR", raw_data = raw_data, project_name = project_name)
   normalization <- match.arg(arg = normalization)
@@ -116,12 +115,13 @@ GeomSketch <- function(object, geom_size = 1000, geom_pca_dims = 10, sketch_n_pc
 #'   }
 #' @param return_perturb_mat Whether to return the perturb matrix. Default is FALSE.
 #' @param n_cores Number of cores used. Default is to use all existing cores. See details \code{\link[parallel]{makeCluster}}.
+#' @param ... Additional parameters pass to \code{\link[parallel]{makeCluster}}.
 #' @return Returns a WLR object.
 #' @export
 #' @examples \donttest{
 #' object <- RunWLR(object, n_iters = 100)
 #' }
-RunWLR <- function(object, n_iters = 100, ratio = 0.05, wlr_pca_dims = 0, wlr_k = 100, wlr_t = 0, norm_type = c("l1", "l2"), return_perturb_mat = FALSE, n_cores = NULL){
+RunWLR <- function(object, n_iters = 100, ratio = 0.05, wlr_pca_dims = 0, wlr_k = 100, wlr_t = 0, norm_type = c("l1", "l2"), return_perturb_mat = FALSE, n_cores = NULL, ...){
   message("Run Bootstrapping")
   params.use <- object@params
   if(params.use$pca_dims > 0){
@@ -135,7 +135,7 @@ RunWLR <- function(object, n_iters = 100, ratio = 0.05, wlr_pca_dims = 0, wlr_k 
   } else {
     dist.use <- object@dist_null
   }
-  bootstap.results <- Bootstrap(data = data.use, dist_mat_null = dist.use, k = wlr_k, kernel = params.use$kernel, pca_dims = wlr_pca_dims, norm_type = norm_type, n_iters = n_iters, ratio = ratio, t = wlr_t, calc_perturb_mat = return_perturb_mat, n_cores = n_cores, zero_percent = params.use$zero_percent)
+  bootstap.results <- Bootstrap(data = data.use, dist_mat_null = dist.use, k = wlr_k, kernel = params.use$kernel, pca_dims = wlr_pca_dims, norm_type = norm_type, n_iters = n_iters, ratio = ratio, t = wlr_t, calc_perturb_mat = return_perturb_mat, n_cores = n_cores, zero_percent = params.use$zero_percent, ...)
   object@weight_mat <- bootstap.results[1:3]
   object@dist_mat <- bootstap.results$dist_mat
   object@params <- MergeLists(object@params, mget(x = names(x = formals()), envir = sys.frame(which = sys.nframe()))[-1])

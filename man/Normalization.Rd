@@ -29,7 +29,7 @@ Normalization(
 \item{verbose}{Whether to display a process bar. Default is FALSE.}
 }
 \value{
-Returns a list contains outputs from \code{\link[irlba]{irlba}}.
+Returns the normalized data.
 }
 \description{
 Normalize count or other data.

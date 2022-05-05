@@ -31,9 +31,8 @@ Eigen::SparseMatrix<double> CosineNormSparse(Eigen::SparseMatrix<double> data, b
 // [[Rcpp::export]]
 Eigen::MatrixXd CosineNorm(Eigen::MatrixXd data, bool display_progress = true){
   Progress p(data.cols(), display_progress);
-  Eigen::VectorXd colSums = data.colwise().sum();
   Eigen::MatrixXd data2 = data.cwiseProduct(data);
-  Eigen::ArrayXd col2Sums = data2.transpose() * Eigen::VectorXd::Ones(data2.cols());
+  Eigen::ArrayXd col2Sums = data2.colwise().sum();
   col2Sums = col2Sums.sqrt();
   for (int k=0; k < data.cols(); ++k){
     p.increment();
