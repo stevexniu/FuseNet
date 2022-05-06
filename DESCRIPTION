@@ -7,6 +7,8 @@ Authors@R:
            role = c("aut", "cre"),
            email = "xin2001@med.cornell.edu")
 Description: Permutation based network fusion across multiple modalities, such as (single-cell) transcriptomics and proteomics data.
+Maintainer: X. Steve Niu <xin2001@med.cornell.edu>
+BugReports: https://github.com/stevexniu/FuseNet/issues
 Depends: R (>= 3.6.0)
 Imports: 
 	methods,
