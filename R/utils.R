@@ -1,7 +1,7 @@
-#' @useDynLib WLR
+#' @useDynLib FuseNet
 #' @importFrom Rcpp sourceCpp
+#' 
 NULL
-#> NULL
 
 #' Data Normalization
 #'
@@ -10,16 +10,16 @@ NULL
 #' @param counts Data to normalize. An N x M matrix with N rows of features and M columns of data points.
 #' @param normalization Normalization method used. Default is cosine.
 #' \itemize{
-#'   \item cosine, cosine nomalization: feature counts for each data point are divided by the L2 norm of them.
+#'   \item cosine, cosine normalization: feature counts for each data point are divided by the L2 norm of them.
 #'   \item lognorm, log normalization: feature counts for each data point are divided by the total sum of them. Then the data is multiplied by the scale.factor before taking a log-transformed by log(1+x).
 #'   \item none, additional normalization is not performed.
 #'   }
 #' @param normalize_factor Normalization factor used with lognorm method. Default is 10000.
-#' @param zero_percent Zero-entry percentage threshold. If the number of zero entries in the returned matrices is above this number, a sparse matrix will be returned. Default is 0.7 aka 70\%.
+#' @param zero_percent Zero-entry percentage threshold. If the number of zeros in the returned matrices is above this number, a sparse matrix will be returned. Default is 0.7 aka 70\%.
 #' @param verbose Whether to display a process bar. Default is FALSE.
 #' @return Returns the normalized data.
-#' @import Matrix
-#' @examples \donttest{
+#' @importFrom Matrix nnzero Matrix
+#' @examples \dontrun{
 #' normalized.data <- Normalization(data)
 #' }
 Normalization <- function(counts, normalization = c("cosine", "lognorm", "none"), normalize_factor = 1e4, zero_percent = 0.7, verbose = FALSE){
@@ -47,7 +47,7 @@ Normalization <- function(counts, normalization = c("cosine", "lognorm", "none")
 #' @param matrix Matrix to use.
 #' @param verbose Whether to display a process bar. Default is FALSE.
 #' @return Returns a scaled and centered data.
-#' @examples \donttest{
+#' @examples \dontrun{
 #' scaled.data <- Scaling(data)
 #' }
 Scaling <- function(matrix, verbose = FALSE){
@@ -69,7 +69,7 @@ Scaling <- function(matrix, verbose = FALSE){
 #' @param seed Random seed number. Default is 1.
 #' @return Returns a list contains outputs from \code{\link[irlba]{irlba}}.
 #' @importFrom irlba irlba
-#' @examples \donttest{
+#' @examples \dontrun{
 #' pca.result <- PCA(scaled.data, n_dims = 3)
 #' }
 PCA <- function(scaled_data, n_dims = 10, seed = 1){
@@ -80,11 +80,11 @@ PCA <- function(scaled_data, n_dims = 10, seed = 1){
 
 #' L1-like Norm
 #'
-#' Compute L1-like norm defined by the absolute values of the differences between each entrie of two matrices with the same dimensions.
+#' Compute L1-like norm defined by the absolute values of the differences between each entry of two matrices with the same dimensions.
 #'
 #' @param mat1,mat2 Two matrices.
 #' @return Returns a matrix with L1-like norms.
-#' @examples \donttest{
+#' @examples \dontrun{
 #' l1.norm <- L1Norm(matrix1, matrix2)
 #' }
 L1Norm <- function(mat1, mat2){
@@ -97,7 +97,7 @@ L1Norm <- function(mat1, mat2){
 #'
 #' @param mat1,mat2 Two matrices.
 #' @return Returns a matrix with L2-like norms.
-#' @examples \donttest{
+#' @examples \dontrun{
 #' l2.norm <- L2Norm(matrix1, matrix2)
 #' }
 L2Norm <- function(mat1, mat2){
@@ -109,10 +109,10 @@ L2Norm <- function(mat1, mat2){
 #' Compute euclidean nearest neighbor distances.
 #'
 #' @param data An M x d matrix with M rows of data points and d columns of features.
-#' @param ka Number of nearest neighbours. See details from \code{\link[RANN]{nn2}}.
+#' @param ka Number of nearest neighbors. See details from \code{\link[RANN]{nn2}}.
 #' @return Returns the distance matrix.
 #' @importFrom RANN nn2
-#' @examples \donttest{
+#' @examples \dontrun{
 #' dist.mat <- EuclideanDist(data, ka = 10)
 #' }
 EuclideanDist <- function(data, ka){
@@ -130,10 +130,10 @@ EuclideanDist <- function(data, ka){
 #' Compute gaussian nearest neighbor distances.
 #'
 #' @param data An M x d matrix or data.frame with M rows of data points and d columns of features.
-#' @param ka Number of nearest neighbours. See details from \code{\link[RANN]{nn2}}.
+#' @param ka Number of nearest neighbors. See details from \code{\link[RANN]{nn2}}.
 #' @return Returns the distance matrix.
 #' @importFrom RANN nn2
-#' @examples \donttest{
+#' @examples \dontrun{
 #' dist.mat <- GaussianDist(data, ka = 10)
 #' }
 GaussianDist <- function(data, ka){
@@ -152,7 +152,7 @@ GaussianDist <- function(data, ka){
 #' Run Geometric Sketching
 #'
 #' Run Geometric sketching sampling.
-#' See \href{https://www.cell.com/cell-systems/fulltext/S2405-4712(19)30152-8?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2405471219301528%3Fshowall%3Dtrue}{Hie et al., 2019} for details.
+#' See \href{https://www.sciencedirect.com/science/article/pii/S2405471219301528}{Hie et al., 2019} for details.
 #' This function relies on reticulate R package to import geosketch python library. Only one python environment is allowed by reticulate configuration.
 #' Therefore please be careful when importing other R packages that will invoke and set up reticulate python configuration, i.e library(Seurat), before calling GeomSketch function.
 #'
@@ -166,7 +166,7 @@ GaussianDist <- function(data, ka){
 #' @importFrom irlba irlba
 #' @return Returns geometric sketch ID.
 #' @export
-#' @examples \donttest{
+#' @examples \dontrun{
 #' sketch.ids <- RunGeomSketch(data, geom_size = 1000)
 #' }
 RunGeomSketch <- function(data, geom_size, is_pca = FALSE, n_pca = 10, seed = 1, which_python = Sys.which(names = "python3")){
@@ -187,35 +187,35 @@ RunGeomSketch <- function(data, geom_size, is_pca = FALSE, n_pca = 10, seed = 1,
 
 #' Bootstrapping of Distance Matrix
 #'
-#' Boostrapping
+#' Bootstrapping  of Distance Matrix
 #'
 #' @param data An M x d matrix or data.frame with M rows of data points and d columns of features.
 #' @param dist_mat_null An M x M distance matrix calculated from the original data (null).
-#' @param k Number of nearest neighbours. Default is 10. See details from \code{\link[RANN]{nn2}}.
+#' @param k Number of nearest neighbors. Default is 10. See details from \code{\link[RANN]{nn2}}.
 #' @param kernel Kernel distance used:
 #' \itemize{
-#'   \item gaussian, gaussian distance kernel. See details \code{\link[WLR]{EuclideanDist}}.
-#'   \item euclidean, euclidean distance kernel. See details \code{\link[WLR]{GaussianDist}}.
+#'   \item gaussian, gaussian distance kernel. See details \code{\link[FuseNet]{EuclideanDist}}.
+#'   \item euclidean, euclidean distance kernel. See details \code{\link[FuseNet]{GaussianDist}}.
 #'   }
 #' @param normalization Normalization method used:
 #' #' \itemize{
-#'   \item cosine, cosine nomalization. See details \code{\link[WLR]{Normalization}}.
-#'   \item lognorm, log normalization. See details \code{\link[WLR]{Normalization}}.
+#'   \item cosine, cosine normalization. See details \code{\link[FuseNet]{Normalization}}.
+#'   \item lognorm, log normalization. See details \code{\link[FuseNet]{Normalization}}.
 #'   \item none, normalization is not performed.
 #'   }
-#' @param normalize_factor Normalize factor used in log normalization. Default is 10000. See details \code{\link[WLR]{Normalization}}.
+#' @param normalize_factor Normalize factor used in log normalization. Default is 10000. See details \code{\link[FuseNet]{Normalization}}.
 #' @param pca_dims Number of dimensions used. Default is 0 and PCA is not performed.
 #' @param norm_type Type of norm used:
 #' \itemize{
-#'   \item l1, L1-like norm. See details \code{\link[WLR]{L1Norm}}.
-#'   \item l2, L1-like norm. See details \code{\link[WLR]{L2Norm}}.
+#'   \item l1, L1-like norm. See details \code{\link[FuseNet]{L1Norm}}.
+#'   \item l2, L1-like norm. See details \code{\link[FuseNet]{L2Norm}}.
 #'   }
 #' @param n_iters Number of bootstrapping iterations. Default is 100.
 #' @param ratio Fraction of features to be downsampled in the original data matrix. Default is 0.05 aka 5\%.
-#' @param t Matrix power used for the distance matrix. Default is 0 and powering is not performed. See \code{\link[WLR]{MatrixPower}} for details.
+#' @param t Matrix power used for the distance matrix. Default is 0 and powering is not performed. See \code{\link[FuseNet]{MatrixPower}} for details.
 #' @param calc_perturb_mat Whether to calculate the perturb matrix. Default is FALSE.
 #' @param n_cores Number of cores used. Default is to use all existing cores. See details \code{\link[parallel]{makeCluster}}.
-#' @param zero_percent Zero-entry percentage threshold. If the number of zero entries in the returned matrices is above this number, a sparse matrix will be returned. Default is 0.7 aka 70\%.
+#' @param zero_percent Zero-entry percentage threshold. If the number of zeros in the returned matrices is above this number, a sparse matrix will be returned. Default is 0.7 aka 70\%.
 #' @param ... Additional parameters pass to \code{\link[parallel]{makeCluster}}.
 #' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom doParallel registerDoParallel
@@ -228,8 +228,8 @@ RunGeomSketch <- function(data, geom_size, is_pca = FALSE, n_pca = 10, seed = 1,
 #'   \item perturb_mat, d x M matrix with d rows of features and M columns of data points where each entry represents the relative importance of a feature to a data point.
 #'   \item dist_mat, M x M distance matrix.
 #'   }
-#' @examples \donttest{
-#' boot.result <- Bootstrap(data, dist.mat.null, k = 10, kernel = "gaussian", normalization = "cosine", pca_dims = 10, norm_type = "l1", n_iters = 100, ratio = 0.1)
+#' @examples \dontrun{
+#' boot.result <- Bootstrap(data, dist.mat.null, k = 10, pca_dims = 10, n_iters = 100, ratio = 0.1)
 #' }
 Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "euclidean"), normalization = c("cosine", "lognorm", "none"), normalize_factor = 1e4, pca_dims = 0, norm_type = c("l1", "l2"), 
                       n_iters = 100, ratio = 0.05, t = 0, calc_perturb_mat = FALSE, n_cores = NULL, zero_percent = 0.7, ...){
@@ -250,7 +250,7 @@ Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "eucli
   cl <- makeCluster(spec = n_cores, ...)
   registerDoParallel(cl = cl)
   if(pca_dims > 0){
-    results <- foreach(i = 1:n_iters, .multicombine = TRUE, .packages = "WLR") %dopar% {
+    results <- foreach(i = 1:n_iters, .multicombine = TRUE, .packages = "FuseNet") %dopar% {
       set.seed(seed = i)
       sample.idx <- sample(x = 1:n_feature, size = n_sample)
       data.temp <- PCA(scaled_data = data[, sample.idx], n_dims = pca_dims)
@@ -260,7 +260,7 @@ Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "eucli
       list(sample.idx, colSums(x = norm.temp), norm.temp)
     }
   } else {
-    results <- foreach(i = 1:n_iters, .multicombine = TRUE, .packages = "WLR") %dopar% {
+    results <- foreach(i = 1:n_iters, .multicombine = TRUE, .packages = "FuseNet") %dopar% {
       set.seed(seed = i)
       sample.idx <- sample(x = 1:n_feature, size = n_sample)
       dist.mat.temp <- dist.fxn(data = data[, sample.idx], ka = k)
@@ -320,10 +320,10 @@ Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "eucli
 #' @param data An M x d matrix or data.frame with M rows of data points and d columns of features.
 #' @param data_query An N x d matrix or data.frame with N rows of queried data points and d columns of features.
 #' @param weights_data A vector of weights for each data point with total length of M.
-#' @param k Number of nearest neighbours. See details from \code{\link[RANN]{nn2}}.
+#' @param k Number of nearest neighbors. See details from \code{\link[RANN]{nn2}}.
 #' @importFrom RANN nn2
-#' @return Returns the weighte matrix of the queried data.
-#' @examples \donttest{
+#' @return Returns the weight matrix of the queried data.
+#' @examples \dontrun{
 #' weight.mat <- ProjectSketch(data, data.query, weights.data, 30)
 #' }
 ProjectSketch <- function(data, data_query, weights_data, k){
@@ -348,7 +348,7 @@ ProjectSketch <- function(data, data_query, weights_data, k){
 #' @param A A matrix.
 #' @param n Number of powers.
 #' @return Returns the powered matrix.
-#' @examples \donttest{
+#' @examples \dontrun{
 #' A15 <- MatrixBigPower(A, 15)
 #' }
 MatrixBigPower <- function(A, n){
@@ -369,8 +369,8 @@ MatrixBigPower <- function(A, n){
 #' @param A A matrix.
 #' @param n Number of powers.
 #' @return Returns the powered matrix.
-#' @import expm
-#' @examples \donttest{
+#' @importFrom expm expm %^%
+#' @examples \dontrun{
 #' A.cubic <- MatrixPower(A, 3)
 #' }
 MatrixPower <- function(A, n){

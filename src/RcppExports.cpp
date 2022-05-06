@@ -6,9 +6,14 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // CosineNormSparse
 Eigen::SparseMatrix<double> CosineNormSparse(Eigen::SparseMatrix<double> data, bool display_progress);
-RcppExport SEXP _WLR_CosineNormSparse(SEXP dataSEXP, SEXP display_progressSEXP) {
+RcppExport SEXP _FuseNet_CosineNormSparse(SEXP dataSEXP, SEXP display_progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +25,7 @@ END_RCPP
 }
 // CosineNorm
 Eigen::MatrixXd CosineNorm(Eigen::MatrixXd data, bool display_progress);
-RcppExport SEXP _WLR_CosineNorm(SEXP dataSEXP, SEXP display_progressSEXP) {
+RcppExport SEXP _FuseNet_CosineNorm(SEXP dataSEXP, SEXP display_progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -32,7 +37,7 @@ END_RCPP
 }
 // LogNormSparse
 Eigen::SparseMatrix<double> LogNormSparse(Eigen::SparseMatrix<double> data, int scale_factor, bool display_progress);
-RcppExport SEXP _WLR_LogNormSparse(SEXP dataSEXP, SEXP scale_factorSEXP, SEXP display_progressSEXP) {
+RcppExport SEXP _FuseNet_LogNormSparse(SEXP dataSEXP, SEXP scale_factorSEXP, SEXP display_progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -45,7 +50,7 @@ END_RCPP
 }
 // LogNorm
 Eigen::MatrixXd LogNorm(Eigen::MatrixXd data, int scale_factor, bool display_progress);
-RcppExport SEXP _WLR_LogNorm(SEXP dataSEXP, SEXP scale_factorSEXP, SEXP display_progressSEXP) {
+RcppExport SEXP _FuseNet_LogNorm(SEXP dataSEXP, SEXP scale_factorSEXP, SEXP display_progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -58,7 +63,7 @@ END_RCPP
 }
 // FastRowScale
 Eigen::MatrixXd FastRowScale(Eigen::MatrixXd mat, bool scale, bool center, double scale_max, bool display_progress);
-RcppExport SEXP _WLR_FastRowScale(SEXP matSEXP, SEXP scaleSEXP, SEXP centerSEXP, SEXP scale_maxSEXP, SEXP display_progressSEXP) {
+RcppExport SEXP _FuseNet_FastRowScale(SEXP matSEXP, SEXP scaleSEXP, SEXP centerSEXP, SEXP scale_maxSEXP, SEXP display_progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -73,7 +78,7 @@ END_RCPP
 }
 // FastSparseRowScale
 Eigen::MatrixXd FastSparseRowScale(Eigen::SparseMatrix<double> mat, bool scale, bool center, double scale_max, bool display_progress);
-RcppExport SEXP _WLR_FastSparseRowScale(SEXP matSEXP, SEXP scaleSEXP, SEXP centerSEXP, SEXP scale_maxSEXP, SEXP display_progressSEXP) {
+RcppExport SEXP _FuseNet_FastSparseRowScale(SEXP matSEXP, SEXP scaleSEXP, SEXP centerSEXP, SEXP scale_maxSEXP, SEXP display_progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -88,7 +93,7 @@ END_RCPP
 }
 // vector_clip
 NumericVector vector_clip(NumericVector x, double min, double max);
-RcppExport SEXP _WLR_vector_clip(SEXP xSEXP, SEXP minSEXP, SEXP maxSEXP) {
+RcppExport SEXP _FuseNet_vector_clip(SEXP xSEXP, SEXP minSEXP, SEXP maxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -101,17 +106,17 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_WLR_CosineNormSparse", (DL_FUNC) &_WLR_CosineNormSparse, 2},
-    {"_WLR_CosineNorm", (DL_FUNC) &_WLR_CosineNorm, 2},
-    {"_WLR_LogNormSparse", (DL_FUNC) &_WLR_LogNormSparse, 3},
-    {"_WLR_LogNorm", (DL_FUNC) &_WLR_LogNorm, 3},
-    {"_WLR_FastRowScale", (DL_FUNC) &_WLR_FastRowScale, 5},
-    {"_WLR_FastSparseRowScale", (DL_FUNC) &_WLR_FastSparseRowScale, 5},
-    {"_WLR_vector_clip", (DL_FUNC) &_WLR_vector_clip, 3},
+    {"_FuseNet_CosineNormSparse", (DL_FUNC) &_FuseNet_CosineNormSparse, 2},
+    {"_FuseNet_CosineNorm", (DL_FUNC) &_FuseNet_CosineNorm, 2},
+    {"_FuseNet_LogNormSparse", (DL_FUNC) &_FuseNet_LogNormSparse, 3},
+    {"_FuseNet_LogNorm", (DL_FUNC) &_FuseNet_LogNorm, 3},
+    {"_FuseNet_FastRowScale", (DL_FUNC) &_FuseNet_FastRowScale, 5},
+    {"_FuseNet_FastSparseRowScale", (DL_FUNC) &_FuseNet_FastSparseRowScale, 5},
+    {"_FuseNet_vector_clip", (DL_FUNC) &_FuseNet_vector_clip, 3},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_WLR(DllInfo *dll) {
+RcppExport void R_init_FuseNet(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

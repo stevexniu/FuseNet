@@ -2,30 +2,30 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 CosineNormSparse <- function(data, display_progress = TRUE) {
-    .Call('_WLR_CosineNormSparse', PACKAGE = 'WLR', data, display_progress)
+    .Call('_FuseNet_CosineNormSparse', PACKAGE = 'FuseNet', data, display_progress)
 }
 
 CosineNorm <- function(data, display_progress = TRUE) {
-    .Call('_WLR_CosineNorm', PACKAGE = 'WLR', data, display_progress)
+    .Call('_FuseNet_CosineNorm', PACKAGE = 'FuseNet', data, display_progress)
 }
 
 LogNormSparse <- function(data, scale_factor, display_progress = TRUE) {
-    .Call('_WLR_LogNormSparse', PACKAGE = 'WLR', data, scale_factor, display_progress)
+    .Call('_FuseNet_LogNormSparse', PACKAGE = 'FuseNet', data, scale_factor, display_progress)
 }
 
 LogNorm <- function(data, scale_factor, display_progress = TRUE) {
-    .Call('_WLR_LogNorm', PACKAGE = 'WLR', data, scale_factor, display_progress)
+    .Call('_FuseNet_LogNorm', PACKAGE = 'FuseNet', data, scale_factor, display_progress)
 }
 
 FastRowScale <- function(mat, scale = TRUE, center = TRUE, scale_max = 10, display_progress = TRUE) {
-    .Call('_WLR_FastRowScale', PACKAGE = 'WLR', mat, scale, center, scale_max, display_progress)
+    .Call('_FuseNet_FastRowScale', PACKAGE = 'FuseNet', mat, scale, center, scale_max, display_progress)
 }
 
 FastSparseRowScale <- function(mat, scale = TRUE, center = TRUE, scale_max = 10, display_progress = TRUE) {
-    .Call('_WLR_FastSparseRowScale', PACKAGE = 'WLR', mat, scale, center, scale_max, display_progress)
+    .Call('_FuseNet_FastSparseRowScale', PACKAGE = 'FuseNet', mat, scale, center, scale_max, display_progress)
 }
 
 vector_clip <- function(x, min, max) {
-    .Call('_WLR_vector_clip', PACKAGE = 'WLR', x, min, max)
+    .Call('_FuseNet_vector_clip', PACKAGE = 'FuseNet', x, min, max)
 }
 
