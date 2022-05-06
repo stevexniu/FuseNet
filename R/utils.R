@@ -152,7 +152,7 @@ GaussianDist <- function(data, ka){
 #' Run Geometric Sketching
 #'
 #' Run Geometric sketching sampling.
-#' See \href{https://www.sciencedirect.com/science/article/pii/S2405471219301528}{Hie et al., 2019} for details.
+#' See Hie et al. (\doi{10.1016/j.cels.2019.05.003}) for details.
 #' This function relies on reticulate R package to import geosketch python library. Only one python environment is allowed by reticulate configuration.
 #' Therefore please be careful when importing other R packages that will invoke and set up reticulate python configuration, i.e library(Seurat), before calling GeomSketch function.
 #'

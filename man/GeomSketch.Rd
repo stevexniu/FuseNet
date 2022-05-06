@@ -37,7 +37,7 @@ Returns a FuseNet object contains geometric sketch IDs.
 }
 \description{
 Run Geometric sketching sampling.
-See \href{https://www.sciencedirect.com/science/article/pii/S2405471219301528}{Hie et al., 2019} for details.
+See Hie et al. (\doi{10.1016/j.cels.2019.05.003}) for details.
 }
 \examples{
 \dontrun{
