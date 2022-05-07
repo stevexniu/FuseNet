@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/698sc11vd208nhjy?svg=true)](https://ci.appveyor.com/project/stevexniu/fusenet)
+
 ### FuseNet: Non-Parametric Network Fusion
 ```FuseNet``` performs permutation based network fusion across different modalities, such as (single-cell) transcriptomics and proteomics data.
 
