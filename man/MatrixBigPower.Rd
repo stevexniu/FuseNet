@@ -17,8 +17,4 @@ Returns the powered matrix.
 \description{
 Compute big powers (>10) of matrix.
 }
-\examples{
-\dontrun{
-A15 <- MatrixBigPower(A, 15)
-}
-}
+\keyword{internal}

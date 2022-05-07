@@ -35,7 +35,10 @@ Returns the normalized data.
 Normalize count or other data.
 }
 \examples{
-\dontrun{
-normalized.data <- Normalization(data)
+{
+data.use <- matrix(runif(100), 10)
+normalized.data <- Normalization(data.use)
 }
+
 }
+\concept{utils}

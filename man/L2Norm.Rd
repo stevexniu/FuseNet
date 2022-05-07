@@ -15,8 +15,4 @@ Returns a matrix with L2-like norms.
 \description{
 Compute L2-like norm defined by the square values of the differences between each entrie of two matrices with the same dimensions.
 }
-\examples{
-\dontrun{
-l2.norm <- L2Norm(matrix1, matrix2)
-}
-}
+\keyword{internal}

@@ -18,7 +18,9 @@ Returns the distance matrix.
 Compute gaussian nearest neighbor distances.
 }
 \examples{
-\dontrun{
-dist.mat <- GaussianDist(data, ka = 10)
+{
+dist.mat <- GaussianDist(iris[,1:2], ka = 10)
 }
+
 }
+\concept{utils}

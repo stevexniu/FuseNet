@@ -27,7 +27,8 @@ setClassUnion(name = 'matrices', members = c("matrix", "dgCMatrix", "dsCMatrix")
 #' @name FuseNet-class
 #' @rdname FuseNet-class
 #' @exportClass FuseNet
-#'
+#' @concept class
+#' 
 setClass(Class = "FuseNet",
          slots = c(
            project_name = "character",

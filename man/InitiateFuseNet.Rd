@@ -57,7 +57,9 @@ Returns a FuseNet object.
 Initialize a FuseNet object.
 }
 \examples{
-\dontrun{
-object <- InitiateFuseNet(data, project_name = "FuseNet", pca_dims = 10, k = 100)
+{
+object <- InitiateFuseNet(t(iris[,1:4]), project_name = "FuseNet", k = 10)
 }
+
 }
+\concept{fuse}

@@ -78,8 +78,4 @@ Returns a list with entries:
 \description{
 Bootstrapping  of Distance Matrix
 }
-\examples{
-\dontrun{
-boot.result <- Bootstrap(data, dist.mat.null, k = 10, pca_dims = 10, n_iters = 100, ratio = 0.1)
-}
-}
+\keyword{internal}

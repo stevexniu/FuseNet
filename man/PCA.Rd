@@ -19,8 +19,4 @@ Returns a list contains outputs from \code{\link[irlba]{irlba}}.
 \description{
 Perform principal components analysis on scaled and centered data (z-scores).
 }
-\examples{
-\dontrun{
-pca.result <- PCA(scaled.data, n_dims = 3)
-}
-}
+\keyword{internal}

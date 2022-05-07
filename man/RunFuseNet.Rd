@@ -49,7 +49,10 @@ Returns a FuseNet object.
 Run Data Fusion.
 }
 \examples{
-\dontrun{
-object <- RunFuseNet(object, n_iters = 100)
+{
+object <- InitiateFuseNet(t(iris[,1:4]), project_name = "FuseNet", k = 3)
+object <- RunFuseNet(object, n_iters = 1, k = 10, ratio = 0.5, n_cores = 1)
 }
+
 }
+\concept{fuse}

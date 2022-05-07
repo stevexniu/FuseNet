@@ -33,10 +33,6 @@ Returns geometric sketch ID.
 Run Geometric sketching sampling.
 See Hie et al. (\doi{10.1016/j.cels.2019.05.003}) for details.
 This function relies on reticulate R package to import geosketch python library. Only one python environment is allowed by reticulate configuration.
-Therefore please be careful when importing other R packages that will invoke and set up reticulate python configuration, i.e library(Seurat), before calling GeomSketch function.
+Please be careful when importing other R packages that will invoke and set up reticulate python configuration, i.e library(Seurat), before calling GeomSketch function.
 }
-\examples{
-\dontrun{
-sketch.ids <- RunGeomSketch(data, geom_size = 1000)
-}
-}
+\keyword{internal}

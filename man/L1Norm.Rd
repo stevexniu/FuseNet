@@ -15,8 +15,4 @@ Returns a matrix with L1-like norms.
 \description{
 Compute L1-like norm defined by the absolute values of the differences between each entry of two matrices with the same dimensions.
 }
-\examples{
-\dontrun{
-l1.norm <- L1Norm(matrix1, matrix2)
-}
-}
+\keyword{internal}

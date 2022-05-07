@@ -24,7 +24,13 @@ Returns a list with entries:
 Weight and fuse distance matrices based on the relative weights.
 }
 \examples{
-\dontrun{
-fused.data <- FuseData(object1, object2, project_k = 20)
+{
+object1 <- InitiateFuseNet(t(iris[,1:2]), project_name = "FuseNet", k = 3)
+object1 <- RunFuseNet(object1, n_iters = 1, k = 3, ratio = 0.5, n_cores = 1)
+object2 <- InitiateFuseNet(t(iris[,3:4]), project_name = "FuseNet", k = 3)
+object2 <- RunFuseNet(object2, n_iters = 2, k = 3, ratio = 0.5, n_cores = 1)
+fused.data <- FuseData(object1, object2)
 }
+
 }
+\concept{fuse}

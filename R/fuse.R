@@ -31,9 +31,11 @@ NULL
 #' @importFrom methods is new
 #' @importFrom stats sd
 #' @export
-#' @examples \dontrun{
-#' object <- InitiateFuseNet(data, project_name = "FuseNet", pca_dims = 10, k = 100)
+#' @concept fuse
+#' @examples {
+#' object <- InitiateFuseNet(t(iris[,1:4]), project_name = "FuseNet", k = 10)
 #' }
+#' 
 InitiateFuseNet <- function(raw_data, project_name = "", normalization = c("cosine", "lognorm", "none"), normalize_factor = 1e4, zero_percent = 0.7, pca_dims = 0, kernel = c("gaussian", "euclidean"), k = 100, t = 0, verbose = FALSE, seed = 1){
   message("Initiate FuseNet")
   feature.sd <- apply(X = raw_data, MARGIN = 1, FUN = sd)
@@ -84,9 +86,11 @@ InitiateFuseNet <- function(raw_data, project_name = "", normalization = c("cosi
 #' @param which_python Path to python3 used.
 #' @return Returns a FuseNet object contains geometric sketch IDs.
 #' @export
+#' @concept fuse
 #' @examples \dontrun{
-#' object <- GeomSketch(object, geom_size = 2000)
+#' object <- GeomSketch(object, geom_size = 10)
 #' }
+#' 
 GeomSketch <- function(object, geom_size = 1000, geom_pca_dims = 10, sketch_n_pca = 0, sketch_k = 30, sketch_t = 0, geom_pca_seed = 1, which_python = Sys.which(names = "python3")){
   if(nrow(x = object@scaled_data) == 0){
     message("Scale Data")
@@ -120,9 +124,12 @@ GeomSketch <- function(object, geom_size = 1000, geom_pca_dims = 10, sketch_n_pc
 #' @param ... Additional parameters pass to \code{\link[parallel]{makeCluster}}.
 #' @return Returns a FuseNet object.
 #' @export
-#' @examples \dontrun{
-#' object <- RunFuseNet(object, n_iters = 100)
+#' @concept fuse
+#' @examples {
+#' object <- InitiateFuseNet(t(iris[,1:4]), project_name = "FuseNet", k = 3)
+#' object <- RunFuseNet(object, n_iters = 1, k = 10, ratio = 0.5, n_cores = 1)
 #' }
+#' 
 RunFuseNet <- function(object, n_iters = 100, ratio = 0.05, pca_dims = 0, k = 100, t = 0, norm_type = c("l1", "l2"), return_perturb_mat = FALSE, n_cores = NULL, ...){
   message("Run Bootstrapping")
   params.use <- object@params
@@ -156,11 +163,17 @@ RunFuseNet <- function(object, n_iters = 100, ratio = 0.05, pca_dims = 0, k = 10
 #'   \item fused_weight, n x M matrix with n rows of objects or modality to fuse and M columns of data points.
 #'   \item fused_dist, M x M fused distance matrix.
 #'   }
-#' @importFrom Matrix nnzero Matrix
+#' @importFrom Matrix nnzero Matrix t
 #' @export
-#' @examples \dontrun{
-#' fused.data <- FuseData(object1, object2, project_k = 20)
+#' @concept fuse
+#' @examples {
+#' object1 <- InitiateFuseNet(t(iris[,1:2]), project_name = "FuseNet", k = 3)
+#' object1 <- RunFuseNet(object1, n_iters = 1, k = 3, ratio = 0.5, n_cores = 1)
+#' object2 <- InitiateFuseNet(t(iris[,3:4]), project_name = "FuseNet", k = 3)
+#' object2 <- RunFuseNet(object2, n_iters = 2, k = 3, ratio = 0.5, n_cores = 1)
+#' fused.data <- FuseData(object1, object2)
 #' }
+#' 
 FuseData <- function(..., project_k = 10, zero_percent = 0.7){
   obj.list <- list(...)
   n.obj <- length(x = obj.list)

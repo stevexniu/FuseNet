@@ -15,3 +15,4 @@ Returns the merged list.
 \description{
 Merge twp lists by the name of their elements.
 }
+\keyword{internal}

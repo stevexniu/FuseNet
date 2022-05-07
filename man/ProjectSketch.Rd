@@ -21,8 +21,4 @@ Returns the weight matrix of the queried data.
 \description{
 Project weights learned from geometric sketches onto other data points based on nearest neighbors.
 }
-\examples{
-\dontrun{
-weight.mat <- ProjectSketch(data, data.query, weights.data, 30)
-}
-}
+\keyword{internal}

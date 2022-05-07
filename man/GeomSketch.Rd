@@ -41,6 +41,8 @@ See Hie et al. (\doi{10.1016/j.cels.2019.05.003}) for details.
 }
 \examples{
 \dontrun{
-object <- GeomSketch(object, geom_size = 2000)
+object <- GeomSketch(object, geom_size = 10)
 }
+
 }
+\concept{fuse}

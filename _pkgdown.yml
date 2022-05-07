@@ -1,0 +1,43 @@
+url: https://stevexniu.github.io/FuseNet/
+
+destination: docs
+
+template:
+  package: preferably
+  params:
+    bootswatch: united
+    toggle: manual
+
+navbar:
+  structure:
+    left:
+    - reference
+    - news
+    right: github
+  components:
+    reference:
+      text: Reference
+      href: reference/index.html
+    news:
+      text: News
+      href: news/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/stevexniu/FuseNet/
+      aria-label: github
+
+reference:
+- title: Utility Functions
+  desc: Utility functions used in FuseNet
+- contents:
+  - has_concept("utils")
+
+- title: Data Fusion
+  desc: Core FuseNet functions to perform data and network fusion
+- contents:
+  - has_concept("fuse")
+
+- title: FuseNet Class
+  desc: FuseNet object information
+- contents:
+  - has_concept("class")

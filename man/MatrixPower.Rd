@@ -17,8 +17,4 @@ Returns the powered matrix.
 \description{
 Compute powers of matrix.
 }
-\examples{
-\dontrun{
-A.cubic <- MatrixPower(A, 3)
-}
-}
+\keyword{internal}

@@ -19,9 +19,13 @@ NULL
 #' @param verbose Whether to display a process bar. Default is FALSE.
 #' @return Returns the normalized data.
 #' @importFrom Matrix nnzero Matrix
-#' @examples \dontrun{
-#' normalized.data <- Normalization(data)
+#' @export
+#' @concept utils
+#' @examples {
+#' data.use <- matrix(runif(100), 10)
+#' normalized.data <- Normalization(data.use)
 #' }
+#' 
 Normalization <- function(counts, normalization = c("cosine", "lognorm", "none"), normalize_factor = 1e4, zero_percent = 0.7, verbose = FALSE){
   if(nnzero(counts)/length(counts) < (1-zero_percent)){
     counts <- Matrix(data = counts, sparse = TRUE)
@@ -47,9 +51,13 @@ Normalization <- function(counts, normalization = c("cosine", "lognorm", "none")
 #' @param matrix Matrix to use.
 #' @param verbose Whether to display a process bar. Default is FALSE.
 #' @return Returns a scaled and centered data.
-#' @examples \dontrun{
-#' scaled.data <- Scaling(data)
+#' @export
+#' @concept utils
+#' @examples {
+#' data.use <- matrix(runif(100), 10)
+#' scaled.data <- Scaling(data.use)
 #' }
+#' 
 Scaling <- function(matrix, verbose = FALSE){
   if(is(matrix,"matrix")){
     scale.data <- FastRowScale(mat = matrix, display_progress = verbose)
@@ -69,9 +77,8 @@ Scaling <- function(matrix, verbose = FALSE){
 #' @param seed Random seed number. Default is 1.
 #' @return Returns a list contains outputs from \code{\link[irlba]{irlba}}.
 #' @importFrom irlba irlba
-#' @examples \dontrun{
-#' pca.result <- PCA(scaled.data, n_dims = 3)
-#' }
+#' @keywords internal
+#' 
 PCA <- function(scaled_data, n_dims = 10, seed = 1){
   set.seed(seed = seed)
   pca.res <- irlba(A = scaled_data, nv = n_dims)
@@ -84,22 +91,21 @@ PCA <- function(scaled_data, n_dims = 10, seed = 1){
 #'
 #' @param mat1,mat2 Two matrices.
 #' @return Returns a matrix with L1-like norms.
-#' @examples \dontrun{
-#' l1.norm <- L1Norm(matrix1, matrix2)
-#' }
+#' @keywords internal
+#' 
 L1Norm <- function(mat1, mat2){
   return(abs(x = (mat1 - mat2)))
 }
 
+#' 
 #' L2-like Norm
 #'
 #' Compute L2-like norm defined by the square values of the differences between each entrie of two matrices with the same dimensions.
 #'
 #' @param mat1,mat2 Two matrices.
 #' @return Returns a matrix with L2-like norms.
-#' @examples \dontrun{
-#' l2.norm <- L2Norm(matrix1, matrix2)
-#' }
+#' @keywords internal
+#' 
 L2Norm <- function(mat1, mat2){
   return((mat1 - mat2)^2)
 }
@@ -112,9 +118,12 @@ L2Norm <- function(mat1, mat2){
 #' @param ka Number of nearest neighbors. See details from \code{\link[RANN]{nn2}}.
 #' @return Returns the distance matrix.
 #' @importFrom RANN nn2
-#' @examples \dontrun{
-#' dist.mat <- EuclideanDist(data, ka = 10)
+#' @export
+#' @concept utils
+#' @examples {
+#' dist.mat <- EuclideanDist(iris[,1:2], ka = 10)
 #' }
+#' 
 EuclideanDist <- function(data, ka){
   knn <- nn2(data = data, k = ka)
   n <- nrow(x = knn[[1]])
@@ -133,9 +142,12 @@ EuclideanDist <- function(data, ka){
 #' @param ka Number of nearest neighbors. See details from \code{\link[RANN]{nn2}}.
 #' @return Returns the distance matrix.
 #' @importFrom RANN nn2
-#' @examples \dontrun{
-#' dist.mat <- GaussianDist(data, ka = 10)
+#' @export
+#' @concept utils
+#' @examples {
+#' dist.mat <- GaussianDist(iris[,1:2], ka = 10)
 #' }
+#' 
 GaussianDist <- function(data, ka){
   knn <- nn2(data = data, k = ka * 3)
   n <- nrow(x = knn[[1]])
@@ -154,8 +166,7 @@ GaussianDist <- function(data, ka){
 #' Run Geometric sketching sampling.
 #' See Hie et al. (\doi{10.1016/j.cels.2019.05.003}) for details.
 #' This function relies on reticulate R package to import geosketch python library. Only one python environment is allowed by reticulate configuration.
-#' Therefore please be careful when importing other R packages that will invoke and set up reticulate python configuration, i.e library(Seurat), before calling GeomSketch function.
-#'
+#' Please be careful when importing other R packages that will invoke and set up reticulate python configuration, i.e library(Seurat), before calling GeomSketch function.
 #' @param data An M x d matrix or data.frame with M rows of data points and d columns of features.
 #' @param geom_size Size of geometric sketches to return.
 #' @param is_pca Whether the data columns are principal components.
@@ -165,10 +176,8 @@ GaussianDist <- function(data, ka){
 #' @import reticulate
 #' @importFrom irlba irlba
 #' @return Returns geometric sketch ID.
-#' @export
-#' @examples \dontrun{
-#' sketch.ids <- RunGeomSketch(data, geom_size = 1000)
-#' }
+#' @keywords internal
+#'
 RunGeomSketch <- function(data, geom_size, is_pca = FALSE, n_pca = 10, seed = 1, which_python = Sys.which(names = "python3")){
   use_python(python = which_python, required = TRUE)
   if(!py_module_available("geosketch")){
@@ -228,9 +237,8 @@ RunGeomSketch <- function(data, geom_size, is_pca = FALSE, n_pca = 10, seed = 1,
 #'   \item perturb_mat, d x M matrix with d rows of features and M columns of data points where each entry represents the relative importance of a feature to a data point.
 #'   \item dist_mat, M x M distance matrix.
 #'   }
-#' @examples \dontrun{
-#' boot.result <- Bootstrap(data, dist.mat.null, k = 10, pca_dims = 10, n_iters = 100, ratio = 0.1)
-#' }
+#' @keywords internal
+#' 
 Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "euclidean"), normalization = c("cosine", "lognorm", "none"), normalize_factor = 1e4, pca_dims = 0, norm_type = c("l1", "l2"), 
                       n_iters = 100, ratio = 0.05, t = 0, calc_perturb_mat = FALSE, n_cores = NULL, zero_percent = 0.7, ...){
   kernel <- match.arg(arg = kernel)
@@ -247,7 +255,7 @@ Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "eucli
   dist_mat_null <- as.matrix(dist_mat_null)
   
   if(is.null(x = n_cores)) n_cores <- detectCores() - 1
-  cl <- makeCluster(spec = n_cores, ...)
+  cl <- makeCluster(spec = n_cores, setup_strategy = "sequential") # R4.0.0 Compatibility
   registerDoParallel(cl = cl)
   if(pca_dims > 0){
     results <- foreach(i = 1:n_iters, .multicombine = TRUE, .packages = "FuseNet") %dopar% {
@@ -323,9 +331,8 @@ Bootstrap <- function(data, dist_mat_null, k = 10, kernel = c("gaussian", "eucli
 #' @param k Number of nearest neighbors. See details from \code{\link[RANN]{nn2}}.
 #' @importFrom RANN nn2
 #' @return Returns the weight matrix of the queried data.
-#' @examples \dontrun{
-#' weight.mat <- ProjectSketch(data, data.query, weights.data, 30)
-#' }
+#' @keywords internal
+#' 
 ProjectSketch <- function(data, data_query, weights_data, k){
   knn.obj <- nn2(data = data, query = data_query, k = k)
   gauss <- function(x, k) exp(x = (-1 * (x / x[k])^2))
@@ -348,9 +355,8 @@ ProjectSketch <- function(data, data_query, weights_data, k){
 #' @param A A matrix.
 #' @param n Number of powers.
 #' @return Returns the powered matrix.
-#' @examples \dontrun{
-#' A15 <- MatrixBigPower(A, 15)
-#' }
+#' @keywords internal
+#' 
 MatrixBigPower <- function(A, n){
   if(n > 0){
     e <- eigen(x = A)
@@ -370,9 +376,8 @@ MatrixBigPower <- function(A, n){
 #' @param n Number of powers.
 #' @return Returns the powered matrix.
 #' @importFrom expm expm %^%
-#' @examples \dontrun{
-#' A.cubic <- MatrixPower(A, 3)
-#' }
+#' @keywords internal
+#' 
 MatrixPower <- function(A, n){
   if(n > 0){
     return(A %^% n)
@@ -387,6 +392,8 @@ MatrixPower <- function(A, n){
 #'
 #' @param a,b Two lists.
 #' @return Returns the merged list.
+#' @keywords internal
+#' 
 MergeLists <- function(a, b) {
   a.names <- names(a)
   b.names <- names(b)

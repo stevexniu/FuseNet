@@ -38,3 +38,4 @@ The FuseNet object with the slot information listed as follow:
 \item{\code{params}}{Commands used.}
 }}
 
+\concept{class}

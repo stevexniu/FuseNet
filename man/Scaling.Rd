@@ -18,7 +18,10 @@ Returns a scaled and centered data.
 Scale and center data.
 }
 \examples{
-\dontrun{
-scaled.data <- Scaling(data)
+{
+data.use <- matrix(runif(100), 10)
+scaled.data <- Scaling(data.use)
 }
+
 }
+\concept{utils}

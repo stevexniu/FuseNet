@@ -18,7 +18,9 @@ Returns the distance matrix.
 Compute euclidean nearest neighbor distances.
 }
 \examples{
-\dontrun{
-dist.mat <- EuclideanDist(data, ka = 10)
+{
+dist.mat <- EuclideanDist(iris[,1:2], ka = 10)
 }
+
 }
+\concept{utils}
