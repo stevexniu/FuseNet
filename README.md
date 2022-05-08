@@ -14,6 +14,6 @@ devtools::install_github("stevexniu/FuseNet")
 Usage
 -----
 See tutorial in ```vignettes/example.Rmd```
-or [Get Stated](https://stevexniu.github.io/FuseNet/articles/example.html)
+or [FuseNet Reference](https://stevexniu.github.io/FuseNet/) and [Get Stated](https://stevexniu.github.io/FuseNet/articles/example.html) 
 
 © [X. Steve Niu](https://github.com/stevexniu) from [Landau Lab](https://www.landaulab.org), Weill Cornell Medicine and New York Genome Center
