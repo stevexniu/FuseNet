@@ -63,7 +63,9 @@ InitiateFuseNet <- function(raw_data, project_name = "", normalization = c("cosi
   dist.mat <- switch(kernel,
                              euclidean = EuclideanDist(data = data.use, ka = k),
                              gaussian = GaussianDist(data = data.use, ka = k))
+  message("Matrix Power")
   dist.mat <- MatrixPower(A = as.matrix(x = dist.mat), n = t)
+  message("Finalize")
   if(nnzero(x = dist.mat)/length(x = dist.mat) < (1 - zero_percent)) dist.mat <- Matrix(data = dist.mat, sparse = TRUE)
   dimnames(x = dist.mat) <- list(colnames(x = object@raw_data), colnames(x = object@raw_data))
   object@dist_null <- dist.mat

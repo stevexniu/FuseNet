@@ -11,6 +11,7 @@ template:
 navbar:
   structure:
     left:
+    - articles
     - reference
     - news
     right: github
@@ -25,6 +26,11 @@ navbar:
       icon: fab fa-github fa-lg
       href: https://github.com/stevexniu/FuseNet/
       aria-label: github
+    articles:
+      text: Vignettes
+      menu:
+      - text: Get started
+        href: articles/example.html
 
 reference:
 - title: Utility Functions

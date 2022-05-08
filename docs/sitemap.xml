@@ -4,6 +4,9 @@
     <loc>https://stevexniu.github.io/FuseNet/404.html</loc>
   </url>
   <url>
+    <loc>https://stevexniu.github.io/FuseNet/articles/Untitled.html</loc>
+  </url>
+  <url>
     <loc>https://stevexniu.github.io/FuseNet/articles/index.html</loc>
   </url>
   <url>
@@ -28,9 +31,6 @@
     <loc>https://stevexniu.github.io/FuseNet/reference/FuseNet-class.html</loc>
   </url>
   <url>
-    <loc>https://stevexniu.github.io/FuseNet/reference/FuseWLR.html</loc>
-  </url>
-  <url>
     <loc>https://stevexniu.github.io/FuseNet/reference/GaussianDist.html</loc>
   </url>
   <url>
@@ -38,9 +38,6 @@
   </url>
   <url>
     <loc>https://stevexniu.github.io/FuseNet/reference/InitiateFuseNet.html</loc>
-  </url>
-  <url>
-    <loc>https://stevexniu.github.io/FuseNet/reference/InitiateWLR.html</loc>
   </url>
   <url>
     <loc>https://stevexniu.github.io/FuseNet/reference/L1Norm.html</loc>
@@ -73,13 +70,7 @@
     <loc>https://stevexniu.github.io/FuseNet/reference/RunGeomSketch.html</loc>
   </url>
   <url>
-    <loc>https://stevexniu.github.io/FuseNet/reference/RunWLR.html</loc>
-  </url>
-  <url>
     <loc>https://stevexniu.github.io/FuseNet/reference/Scaling.html</loc>
-  </url>
-  <url>
-    <loc>https://stevexniu.github.io/FuseNet/reference/WLR-class.html</loc>
   </url>
   <url>
     <loc>https://stevexniu.github.io/FuseNet/reference/index.html</loc>
