@@ -5,7 +5,8 @@ Authors@R:
     person(given = "X. Steve",
            family = "Niu",
            role = c("aut", "cre"),
-           email = "xin2001@med.cornell.edu")
+           email = "xin2001@med.cornell.edu",
+           comment = c(ORCID = "0000-0001-7689-0941"))
 Description: Permutation based network fusion across multiple modalities, such as (single-cell) transcriptomics and proteomics data.
 Maintainer: X. Steve Niu <xin2001@med.cornell.edu>
 BugReports: https://github.com/stevexniu/FuseNet/issues
